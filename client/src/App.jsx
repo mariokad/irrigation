@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import Project from './Project.jsx';
 
 export default class App extends React.Component {
   constructor() {
@@ -19,14 +20,13 @@ export default class App extends React.Component {
     };
     axios.post('https://iotile.cloud/api/v1/auth/api-jwt-auth/', loginInfo)
          .then((response) => {
-           console.log(response);
-           this.setState({
-            token: response.data.token
-           });
+              this.setState({
+              token: response.data.token
+            });
          })
          .catch((error) => {
-           console.error(error);
-           alert('Login failed');
+            console.error(error);
+            alert('Login failed');
          });
   }
 
@@ -43,7 +43,7 @@ export default class App extends React.Component {
         </form>
       </div>)
       :
-      <div>hi</div>
+      <Project token={this.state.token} />
     );
   }
-}
+};
