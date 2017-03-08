@@ -1,44 +1,45 @@
 import React from 'react';
 import axios from 'axios';
-import ProjectList from './ProjectList.jsx';
+import DataStreamList from './DataStreamList.jsx';
 import ErrorMsg from './Error.jsx';
 
-export default class Project extends React.Component {
+export default class DataStream extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      projects: null
+      streams: null
     };
   }
 
-  getProjects() {
+  getDataStreams() {
     axios.defaults.headers.common['Authorization'] = 'JWT ' + this.props.token;
     axios.defaults.headers.post['Content-Type'] = 'application/json';
 
-    axios.get('https://iotile.cloud/api/v1/project/')
+    console.log(this.props.projectId);
+
+    axios.get('https://iotile.cloud/api/v1/stream/')
          .then((response) => {
-          console.log(response.data.results);
             this.setState({
-              projects: response.data.results
+              streams: response.data.results
             });
          })
          .catch((error) => {
             console.error(error);
-            alert('Cannot retrieve projects');
+            alert('Cannot retrieve data streams');
          });
   }
 
   componentDidMount() {
-    this.getProjects();
+    this.getDataStreams();
   }
 
   render() {
     const context = this;
     return (
-      context.state.projects ?
-      <ProjectList token={this.props.token} projects={this.state.projects} />
+      context.state.streams ?
+      <DataStreamList streams={this.state.streams} token={this.props.token} />
       :
-      <ErrorMsg error="getting projects" />
+      <ErrorMsg error="getting streams" />
     );
   }
 };
